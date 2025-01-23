@@ -40,19 +40,6 @@ inputUpload.addEventListener("change", async (evento) => {
 const inputTags = document.getElementById("input-tags");
 const listaTags = document.getElementById("lista-tags");
 
-inputTags.addEventListener("keypress", (evento) => {
-    if (evento.key === "Enter") {
-        evento.preventDefault();
-        const tagTexto = inputTags.value.trim();
-        if (tagTexto !== "") {
-            const tagNova = document.createElement("li");
-            tagNova.innerHTML = `<p>${tagTexto}</p> <img src="./img/close-black.svg" class="remove-tag">`
-            listaTags.appendChild(tagNova);
-            inputTags.value = "";
-        }
-    }
-})
-
  listaTags.addEventListener("click", (evento) => {
     // Verica o local clicado
     if (evento.target.classList.contains("remove-tag")) {
@@ -74,3 +61,30 @@ inputTags.addEventListener("keypress", (evento) => {
         }, 1000)        
     })
 } 
+
+inputTags.addEventListener("keypress", async (evento) => {
+    if (evento.key === "Enter") {
+        evento.preventDefault();
+        const tagTexto = inputTags.value.trim();
+        if (tagTexto !== "") {
+            try {
+                // seleciona e verifica se a tag existe
+                const tagExiste = await buscarTags(tagTexto);
+                if (tagExiste) {
+                    const tagNova = document.createElement("li");
+                    tagNova.innerHTML = `<p>${tagTexto}</p> <img src="./img/close-black.svg" class="remove-tag">`
+                    listaTags.appendChild(tagNova);
+                    inputTags.value = "";
+                } else {
+                    // erro na busca da tag
+                    alert("Tag não foi encontrada");
+                } 
+            } catch (error) {
+                // erro na requisição de busca de tags
+                console.error("Erro ao buscar as tags");
+                alert("Erro ao verificar as tags");
+            }
+            
+        }
+    }
+})
