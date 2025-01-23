@@ -88,3 +88,33 @@ inputTags.addEventListener("keypress", async (evento) => {
         }
     }
 })
+//Captura click no botão publicar
+const btnPublicar = document.querySelector(".botao-publicar");
+
+btnPublicar.addEventListener("click", async (evento) => {
+    evento.preventDefault();
+    
+    const nomeDoProjeto = document.getElementById("nome").value;
+    const descricaoDoProjeto = document.getElementById("descricao").value;
+    const tagsProjeto = Array.from(listaTags.querySelectorAll("p")).map((tag) => tag.textContent);
+
+    console.log(nomeDoProjeto);
+    console.log(descricaoDoProjeto);
+    console.log(tagsProjeto);
+
+})
+//simula o envio par aum banco de dados
+async function publicarProjeto(nomeDoProjeto, descricaoDoProjeto, tagsProjeto) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            const deucerto = Math.random() > 0.5;
+
+            if (deucerto) {
+                resolve("Projeto publicado com sucesso");
+            } else {
+                reject("Erro ao publicar o projeto");
+            }
+        }, 2000)
+    })
+    
+}
