@@ -91,18 +91,6 @@ inputTags.addEventListener("keypress", async (evento) => {
 //Captura click no botão publicar
 const btnPublicar = document.querySelector(".botao-publicar");
 
-btnPublicar.addEventListener("click", async (evento) => {
-    evento.preventDefault();
-    
-    const nomeDoProjeto = document.getElementById("nome").value;
-    const descricaoDoProjeto = document.getElementById("descricao").value;
-    const tagsProjeto = Array.from(listaTags.querySelectorAll("p")).map((tag) => tag.textContent);
-
-    console.log(nomeDoProjeto);
-    console.log(descricaoDoProjeto);
-    console.log(tagsProjeto);
-
-})
 //simula o envio par aum banco de dados
 async function publicarProjeto(nomeDoProjeto, descricaoDoProjeto, tagsProjeto) {
     return new Promise((resolve, reject) => {
@@ -115,6 +103,36 @@ async function publicarProjeto(nomeDoProjeto, descricaoDoProjeto, tagsProjeto) {
                 reject("Erro ao publicar o projeto");
             }
         }, 2000)
-    })
-    
+    })   
 }
+
+btnPublicar.addEventListener("click", async (evento) => {
+    evento.preventDefault();
+    
+    const nomeDoProjeto = document.getElementById("nome").value;
+    const descricaoDoProjeto = document.getElementById("descricao").value;
+    const tagsProjeto = Array.from(listaTags.querySelectorAll("p")).map((tag) => tag.textContent);
+
+    try {
+        const resultado = await publicarProjeto(nomeDoProjeto, descricaoDoProjeto, tagsProjeto);
+        console.log(resultado);
+        alert("Projeto publicado com sucesso!");
+    } catch (error) {
+        console.error("Erro ao publicar o projeto: ", error);
+        alert("Erro ao publicar o projeto");
+    }
+})
+// Seleciona o botão descartar
+const btnDescartar = document.querySelector(".botao-descartar");
+// Adiciona um ouvinte para o botão descartar
+btnDescartar.addEventListener("click", (evento) => {
+    evento.preventDefault();
+    // Reseta o formulário, (A função está usando queryselector porque existe só 1 form)
+    const formulario =document.querySelector("form");
+    formulario.reset();
+
+    imagemPrincipal.src = "./img/imagem1.png";
+    nomeDaImagem.textContent = "imagem-projeto.pnj";
+
+    listaTags.innerHTML = "";
+})
